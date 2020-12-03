@@ -3,8 +3,9 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Scanner;
 
-public class E1 {
+public class E11 {
     public static void main(String[] args) {
+        System.out.println("EJERCICIO 1.1\n");
 
         KeyPair keypair = Xifrar.randomGenerate(1024);
 

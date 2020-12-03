@@ -1,9 +1,9 @@
-import java.security.Key;
 import java.security.KeyStore;
 import java.util.Enumeration;
 
-public class E2 {
+public class E21 {
     public static void main(String[] args) throws Exception {
+        System.out.println("EJERCICIO 2.1\n");
 
         String ksFilePath = "/home/dam2a/.keystore";
         String password = "passwd";
@@ -30,7 +30,7 @@ public class E2 {
 
         // El certificat d’una de les claus
 
-        System.out.println("\nCertificado: " + ks.getCertificate("lamevaclaum9"));
+        //System.out.println("\nCertificado: " + ks.getCertificate("lamevaclaum9"));
 
         // L'algorisme de xifrat d’alguna de les claus
 
