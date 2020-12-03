@@ -80,7 +80,7 @@ public class Xifrar {
     }
 
     public static KeyStore loadKeyStore(String ksFile, String ksPwd) throws Exception {
-        KeyStore ks = KeyStore.getInstance("JCEKS");
+        KeyStore ks = KeyStore.getInstance("JKS");
         File f = new File (ksFile);
         if (f.isFile()) {
             FileInputStream in = new FileInputStream (f);
