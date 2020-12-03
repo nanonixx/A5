@@ -33,9 +33,11 @@ public class E22 {
         }
 
         Enumeration<String> aliases = ks.aliases();
-        System.out.print("\nAlias de las claves: ");
+        System.out.print("Alias de las claves: ");
         while(aliases.hasMoreElements()){
             System.out.print(aliases.nextElement()+"  ");
         }
+
+
     }
 }
