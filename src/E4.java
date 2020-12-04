@@ -10,7 +10,8 @@ public class E4 {
 
         KeyStore ks = Xifrar.loadKeyStore(ksFilePath, password);
 
+        System.out.println(Xifrar.getPublicKey(ks, "lamevaclaum9", password));
 
-
+        //está mal
     }
 }

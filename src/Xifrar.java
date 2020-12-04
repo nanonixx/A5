@@ -48,10 +48,10 @@ public class Xifrar {
     public static byte[] encryptData(byte[] data, PublicKey pub) {
         byte[] encryptedData = null;
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding","SunJCE");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "SunJCE");
             cipher.init(Cipher.ENCRYPT_MODE, pub);
-            encryptedData =  cipher.doFinal(data);
-        } catch (Exception  ex) {
+            encryptedData = cipher.doFinal(data);
+        } catch (Exception ex) {
             System.err.println("Error xifrant: " + ex);
         }
         return encryptedData;
@@ -60,7 +60,7 @@ public class Xifrar {
     public static String decryptData(byte[] data, PrivateKey priv) {
         byte[] decryptedData = null;
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding","SunJCE");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "SunJCE");
             cipher.init(Cipher.DECRYPT_MODE, priv);
             decryptedData = cipher.doFinal(data);
 
@@ -85,9 +85,9 @@ public class Xifrar {
 
     public static KeyStore loadKeyStore(String ksFile, String ksPwd) throws Exception {
         KeyStore ks = KeyStore.getInstance("JKS");
-        File f = new File (ksFile);
+        File f = new File(ksFile);
         if (f.isFile()) {
-            FileInputStream in = new FileInputStream (f);
+            FileInputStream in = new FileInputStream(f);
             ks.load(in, ksPwd.toCharArray());
         }
         return ks;
@@ -97,14 +97,41 @@ public class Xifrar {
 
         FileInputStream f = new FileInputStream(fitxer);
         CertificateFactory cer = CertificateFactory.getInstance("X.509");
-        X509Certificate certificate = (X509Certificate)cer.generateCertificate(f);
+        X509Certificate certificate = (X509Certificate) cer.generateCertificate(f);
 
         return certificate.getPublicKey();
     }
 
-//   public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) {
-//
-//   }
+    public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) throws KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException {
 
+        return ks.getCertificate(alias).getPublicKey();
 
+    }
+
+    public static byte[] signData(byte[] data, PrivateKey priv) {
+        byte[] signature = null;
+
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initSign(priv);
+            signer.update(data);
+            signature = signer.sign();
+        } catch (Exception ex) {
+            System.err.println("Error signant les dades: " + ex);
+        }
+        return signature;
+    }
+
+    public boolean validateSignature(byte[] data, byte[] signature, PublicKey pub) {
+        boolean isValid = false;
+        try {
+            Signature signer = Signature.getInstance("SHA1withRSA");
+            signer.initVerify(pub);
+            signer.update(data);
+            isValid = signer.verify(signature);
+        } catch (Exception ex) {
+            System.err.println("Error validant les dades: " + ex);
+        }
+        return isValid;
+    }
 }
