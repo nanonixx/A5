@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;

@@ -102,5 +102,9 @@ public class Xifrar {
         return certificate.getPublicKey();
     }
 
+//   public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) {
+//
+//   }
+
 
 }
