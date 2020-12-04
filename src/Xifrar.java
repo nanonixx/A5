@@ -104,6 +104,11 @@ public class Xifrar {
 
     public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) throws KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException {
 
+//        File f = new File();
+//        if (f.isFile()) {
+//            FileInputStream in = new FileInputStream(f);
+//            ks.load(in, ksPwd.toCharArray());
+//        }
         return ks.getCertificate(alias).getPublicKey();
 
     }
@@ -134,4 +139,49 @@ public class Xifrar {
         }
         return isValid;
     }
+
+    public static byte[][] encryptWrappedData(byte[] data, PublicKey pub) {
+        byte[][] encWrappedData = new byte[2][];
+        try {
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey sKey = kgen.generateKey();
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, sKey);
+            byte[] encMsg = cipher.doFinal(data);
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.WRAP_MODE, pub);
+            byte[] encKey = cipher.wrap(sKey);
+            encWrappedData[0] = encMsg;
+            encWrappedData[1] = encKey;
+        } catch (Exception  ex) {
+            System.err.println("Ha succeït un error xifrant: " + ex);
+        }
+        return encWrappedData;
+    }
+
+    public static byte[][] decryptWrappedData(byte[] data, PublicKey pub) {
+        byte[][] decWrappedData = new byte[2][];
+        try {
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            kgen.init(128);
+            SecretKey sKey = kgen.generateKey();
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, sKey);
+            byte[] encMsg = cipher.doFinal(data);
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.UNWRAP_MODE, pub);
+            byte[] encKey = cipher.wrap(sKey);
+            //byte[] encKey = cipher.unwrap();
+
+            decWrappedData[0] = encMsg;
+            decWrappedData[1] = encKey;
+        } catch (Exception  ex) {
+            System.err.println("Ha succeït un error xifrant: " + ex);
+        }
+        return decWrappedData;
+    }
+
+
+
 }
