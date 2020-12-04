@@ -4,8 +4,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 public class Xifrar {
@@ -87,6 +91,15 @@ public class Xifrar {
             ks.load(in, ksPwd.toCharArray());
         }
         return ks;
+    }
+
+    public static PublicKey getPublicKey(String fitxer) throws CertificateException, FileNotFoundException {
+
+        FileInputStream f = new FileInputStream(fitxer);
+        CertificateFactory cer = CertificateFactory.getInstance("X.509");
+        X509Certificate certificate = (X509Certificate)cer.generateCertificate(f);
+
+        return certificate.getPublicKey();
     }
 
 
