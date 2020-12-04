@@ -1,9 +1,9 @@
 import java.security.KeyStore;
 
-public class E4 {
+public class E14 {
     public static void main(String[] args) throws Exception {
 
-        System.out.println("EJERCICIO 4\n");
+        System.out.println("EJERCICIO 1.4\n");
 
         String ksFilePath = "/home/dam2a/.keystore";
         String password = "passwd";

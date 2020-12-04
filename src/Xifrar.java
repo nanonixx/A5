@@ -122,7 +122,7 @@ public class Xifrar {
         return signature;
     }
 
-    public boolean validateSignature(byte[] data, byte[] signature, PublicKey pub) {
+    public static boolean validateSignature(byte[] data, byte[] signature, PublicKey pub) {
         boolean isValid = false;
         try {
             Signature signer = Signature.getInstance("SHA1withRSA");
