@@ -13,6 +13,6 @@ public class E15 {
 
         byte[] signature = Xifrar.signData(data, privatekey);
 
-        System.out.println("Signatura: " + signature);
+        System.out.println("Signatura: " + new String(signature));
     }
 }

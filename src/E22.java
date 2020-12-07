@@ -18,6 +18,9 @@ public class E22 {
 
         System.out.println(Arrays.deepToString(encWrappedData));
 
+        byte [] decWrappedData = Xifrar.decryptWrappedData(encWrappedData, privatekey);
+        System.out.println(new String(decWrappedData));
+
         //no entiendo
     }
 }

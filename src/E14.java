@@ -5,13 +5,11 @@ public class E14 {
 
         System.out.println("EJERCICIO 1.4\n");
 
-        String ksFilePath = "/home/dam2a/.keystore";
+        String ksFilePath = "/home/naomi/.keystore";
         String password = "passwd";
 
         KeyStore ks = Xifrar.loadKeyStore(ksFilePath, password);
 
         System.out.println(Xifrar.getPublicKey(ks, "lamevaclaum9", password));
-
-        //está mal
     }
 }

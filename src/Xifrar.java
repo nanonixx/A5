@@ -1,10 +1,9 @@
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -102,14 +101,21 @@ public class Xifrar {
         return certificate.getPublicKey();
     }
 
-    public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) throws KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException {
+    public static PublicKey getPublicKey(KeyStore ks, String alias, String pwMyKey) throws CertificateException, IOException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyStoreException {
 
-//        File f = new File();
-//        if (f.isFile()) {
-//            FileInputStream in = new FileInputStream(f);
-//            ks.load(in, ksPwd.toCharArray());
-//        }
-        return ks.getCertificate(alias).getPublicKey();
+        FileInputStream f = new FileInputStream("/home/naomi/.keystore");
+
+        ks.load(f, pwMyKey.toCharArray());
+        Key key = ks.getKey(alias, pwMyKey.toCharArray());
+
+        if (key instanceof PrivateKey) {
+
+            X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
+            PublicKey pk = certificate.getPublicKey();
+            return pk;
+
+        }
+        else return null;
 
     }
 
@@ -160,26 +166,26 @@ public class Xifrar {
         return encWrappedData;
     }
 
-    public static byte[][] decryptWrappedData(byte[] data, PublicKey pub) {
-        byte[][] decWrappedData = new byte[2][];
-        try {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128);
-            SecretKey sKey = kgen.generateKey();
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, sKey);
-            byte[] encMsg = cipher.doFinal(data);
-            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            cipher.init(Cipher.UNWRAP_MODE, pub);
-            byte[] encKey = cipher.wrap(sKey);
-            //byte[] encKey = cipher.unwrap();
+    public static byte[] decryptWrappedData(byte[][] data, PrivateKey sec) {
+       byte[] msgDes = null;
+       byte[] encMsg = data[0];
+       try {
+           Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+           cipher.init(Cipher.UNWRAP_MODE, sec);
 
-            decWrappedData[0] = encMsg;
-            decWrappedData[1] = encKey;
-        } catch (Exception  ex) {
-            System.err.println("Ha succeït un error xifrant: " + ex);
-        }
-        return decWrappedData;
+           SecretKey sKey;
+           sKey = (SecretKey)cipher.unwrap(data[1], "AES", Cipher.SECRET_KEY);
+
+           cipher = Cipher.getInstance("AES");
+           cipher.init(Cipher.DECRYPT_MODE, sKey);
+
+           msgDes = cipher.doFinal(encMsg);
+
+
+       } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException ex) {
+           System.err.println("Ha succeït un error desxifrant: " + ex);
+       }
+        return msgDes;
     }
 
 
