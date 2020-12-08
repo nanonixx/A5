@@ -18,7 +18,7 @@ public class E11 {
         PrivateKey privatekey = keypair.getPrivate();
 
         byte[] datos = Xifrar.encryptData(msg, publickey);
-        System.out.println("Mensaje encriptado: "+ datos);
+        System.out.println("Mensaje encriptado: " + new String(datos));
 
         System.out.println("Mensaje desencriptado: " + Xifrar.decryptData(datos, privatekey));
 
