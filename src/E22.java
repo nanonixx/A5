@@ -20,8 +20,6 @@ public class E22 {
         System.out.println("Clave Encriptada: " + new String(encWrappedData[1]));
 
         byte [] decWrappedData = Xifrar.decryptWrappedData(encWrappedData, privatekey);
-        System.out.println("Mensaje original desenctiptado: " + new String(decWrappedData));
-
-        //no entiendo
+        System.out.println("Mensaje original desencriptado: " + new String(decWrappedData));
     }
 }
