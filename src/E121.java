@@ -27,7 +27,6 @@ public class E121 {
             System.out.print(aliases.nextElement()+"  ");
         }
 
-
         // El certificat d’una de les claus
 
         System.out.println("\nCertificado: " + ks.getCertificate("lamevaclaum9"));

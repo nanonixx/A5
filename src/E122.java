@@ -8,7 +8,7 @@ public class E122 {
 
         System.out.println("EJERCICIO 1.2.2\n");
 
-        String ksFilePath = "/home/dam2a/.keystore";
+        String ksFilePath = "/home/naomi/.keystore";
         String password = "passwd";
 
         KeyStore ks = Xifrar.loadKeyStore(ksFilePath, password);
